@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_content %}
+    <h1 class='text-center'>
+        Маса {{ pk }}
+    </h1>
+
+    <div class="container mb-5">
+        <div class="row mb-5">
+        {% for cat in categories %}
+            <div class="card ml-3 mb-3" style="width: 18rem;">
+                <img src="{{ cat.image.url }}"
+                     class="card-img-top" alt="Photo description">
+                <div class="card-body">
+
+                    <h5 class="card-title">{{ cat.name }}</h5>
+                    <!-- Button to the Photo Details Page -->
+                    <a href="#" class="btn btn-primary">Add</a>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

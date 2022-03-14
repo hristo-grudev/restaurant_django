@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_content %}
+    <h1 class='text-center'>
+        Kitchen
+    </h1>
+
+    <div class="container mb-5">
+        <div class="row mb-5">
+            {% for item in object_list %}
+                <div class="card ml-3 mb-3" style="width: 15rem;">
+                    <!-- Image -->
+                    <img src="{{ item.image.url }}" height="200px"
+                         class="card-img-top" alt="Photo description">
+                    <div class="card-body">
+
+                        <h5 class="card-title">{{ item.name }}</h5>
+                        <!-- First 30 chars from the description -->
+{#                        <p class="card-text">{{ item.description }}</p>#}
+                        <!-- Button to the Photo Details Page -->
+                        <a href="{% url 'item edit view' item.id %}" class="btn btn-primary">Edit</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{#        <div class=" row d-flex justify-content-center align-content-center">#}
+{#            <a href="{% url 'create pet photo' %}" class="btn btn-lg btn-secondary row align-self-baseline">Add#}
+{#                Photo</a>#}
+{#        </div>#}
+
+{% endblock %}
