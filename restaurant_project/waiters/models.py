@@ -1,6 +1,7 @@
 from django.core.validators import MinValueValidator
 from django.db import models
 
+from restaurant_project.accounts.models import RestaurantUser
 from restaurant_project.kitchen.models import FoodAndDrinks
 
 
@@ -19,16 +20,19 @@ class Tables(models.Model):
         )
     )
 
+    def __str__(self):
+        return f'Table: {self.name}'
+
+
 class Orders(models.Model):
-    food_and_drinks = models.ForeignKey(
-        FoodAndDrinks,
-        on_delete=models.DO_NOTHING,
-    )
     order_start_date = models.DateTimeField(
         auto_now_add=True,
     )
 
-    order_end_date = models.DateTimeField()
+    order_end_date = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
 
     status = models.BooleanField(
         default=False,
@@ -37,4 +41,31 @@ class Orders(models.Model):
     table = models.ForeignKey(
         Tables,
         on_delete=models.DO_NOTHING,
+    )
+
+    waiter = models.ForeignKey(
+        RestaurantUser,
+        on_delete=models.DO_NOTHING,
+    )
+
+
+class OrderDetails(models.Model):
+    PCS_MIN_VALUE = 0.0
+    order = models.ForeignKey(
+        Orders,
+        on_delete=models.CASCADE,
+    )
+    food_and_drinks = models.ForeignKey(
+        FoodAndDrinks,
+        on_delete=models.DO_NOTHING,
+    )
+
+    pcs = models.FloatField(
+        validators=(
+            MinValueValidator(PCS_MIN_VALUE),
+        )
+    )
+
+    completed = models.BooleanField(
+        default=False
     )

@@ -1,7 +1,8 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, HiddenInput
 
 from restaurant_project.common.helpers import BootstrapFormMixin
 from restaurant_project.kitchen.models import FoodAndDrinks
+from restaurant_project.waiters.models import OrderDetails, Orders
 
 
 class EditItemFrom(BootstrapFormMixin, ModelForm):
@@ -46,3 +47,48 @@ class CreateItemFrom(BootstrapFormMixin, ModelForm):
     class Meta:
         model = FoodAndDrinks
         exclude = ('user',)
+
+class CreateOrderForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    class Meta:
+        model = Orders
+        fields = '__all__'
+        widgets = {
+            'waiter': HiddenInput(),
+            'order_end_date': HiddenInput(),
+            'status': HiddenInput(),
+            'table': HiddenInput(),
+
+        }
+
+
+class CreateOrderDetailsForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    class Meta:
+        model = OrderDetails
+        fields = '__all__'
+        widgets = {
+            'order': HiddenInput(),
+
+        }
+
+class DeleteOrderDetailsForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    class Meta:
+        model = OrderDetails
+        fields = '__all__'
+
+
+class CompleteItemForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    class Meta:
+        model = OrderDetails
+        fields = '__all__'

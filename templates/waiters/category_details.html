@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_content %}
+    <h1 class='text-center'>
+        recipes.category.name {{ pk }}
+    </h1>
+
+    <div class="container mb-5">
+        <div class="row mb-5">
+        {% for r in recipes %}
+            <div class="card ml-3 mb-3" style="width: 18rem;">
+                <img src="{{ r.image.url }}"
+                     class="card-img-top" alt="Photo description">
+                <div class="card-body">
+
+                    <h5 class="card-title">{{ r.name }}</h5>
+                    <!-- Button to the Photo Details Page -->
+                    <a href="#" class="btn btn-primary">Add</a>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

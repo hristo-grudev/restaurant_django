@@ -1,3 +1,16 @@
 from django.contrib import admin
 
-# Register your models here.
+from restaurant_project.waiters.models import Tables, Orders, OrderDetails
+
+
+@admin.register(Tables)
+class TablesToIngredientsAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Orders)
+class OrdersToIngredientsAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(OrderDetails)
+class OrderDetailsToIngredientsAdmin(admin.ModelAdmin):
+    pass
