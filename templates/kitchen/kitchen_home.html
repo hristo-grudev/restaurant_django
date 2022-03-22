@@ -3,29 +3,88 @@
 
 {% block page_content %}
     <h1 class='text-center'>
-        Kitchen
+        {% if user_group.name == 'Cooks' %}
+            Кухня
+        {% else %}
+            Бар
+        {% endif %}
     </h1>
-
-    <div class="container mb-5">
-        <div>
-            {% for item in order_items %}
-                <form method="post" action="{% url 'complete item view' item.id %}">
-                    <div class="d-flex justify-content-between">
-                        {% csrf_token %}
-                        {{ complete_form }}
-                        <p>{{ item.food_and_drinks }}</p>
-                        <p>{{ item.pcs|floatformat:0 }}</p>
-                        <button type="submit">Готово</button>
+    <div class="event-schedule-area-two bg-color pad100">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title text-center">
+                        <div class="title-text">
+                            <h3>Поръчка</h3>
+                        </div>
                     </div>
-
-                </form>
-
-            {% endfor %}
+                </div>
+                <!-- /.col end-->
+            </div>
+            <!-- row end-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade active show" id="home" role="tabpanel">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" scope="col">#</th>
+                                            <th class="text-center" scope="col">Маса</th>
+                                            <th scope="col">Ястие/напитка</th>
+                                            <th scope="col">Наименование</th>
+                                            <th scope="col">Брой</th>
+                                            <th class="text-center" scope="col">Статус</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in order_items %}
+                                        <tr class="inner-box">
+                                            <th scope="row">
+                                                <div class="r-no">
+                                                    <span>{{ forloop.counter }}</span>
+                                                </div>
+                                            </th>
+                                            <th scope="row">
+                                                <div class="r-no">
+                                                    <span>{{ item.order.table }}</span>
+                                                </div>
+                                            </th>
+                                            <td>
+                                                <div class="event-img">
+                                                    <img style="width: auto; height: 50px;" class="rounded float-right" src="{{ item.food_and_drinks.image.url }}" alt="{{ item.food_and_drinks }}" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="r-no">
+                                                    <span>{{ item.food_and_drinks }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="r-no">
+                                                    <span>{{ item.pcs|floatformat:0 }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <form method="post" action="{% url 'complete item view' item.id %}">
+                                                        {% csrf_token %}
+                                                        {{ complete_form }}
+                                                        <button type="submit">Готово</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-{#        <div class=" row d-flex justify-content-center align-content-center">#}
-{#            <a href="{% url 'create pet photo' %}" class="btn btn-lg btn-secondary row align-self-baseline">Add#}
-{#                Photo</a>#}
-{#        </div>#}
+
+
 
 {% endblock %}

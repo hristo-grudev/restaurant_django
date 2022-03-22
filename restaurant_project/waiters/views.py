@@ -50,8 +50,10 @@ class TableDetailsView(TemplateView):
             }
             order_details_form = CreateOrderDetailsForm(initial=order_details_data)
             context['order_details_form'] = order_details_form
-            context['order'] = order
-            context['ordered_items'] = OrderDetails.objects.filter(order=order[0])
+            context['order'] = order[0]
+            ordered_items = OrderDetails.objects.filter(order=order[0])
+            context['ordered_items'] = ordered_items
+            context['total_sum'] = sum([item.total_price() for item in ordered_items])
             sent_items_id = OrderDetails.objects.filter(order=order[0]).filter(completed=True).values('id')
             context['sent_items'] = [item['id'] for item in sent_items_id]
             context['delete_from'] = DeleteOrderDetailsForm
@@ -96,4 +98,4 @@ class RemoveItemView(DeleteView):
     def get_object(self):
         object = get_object_or_404(OrderDetails, id=self.kwargs.get('item_id'))
         print(object)
-        return get_object_or_404(OrderDetails, id=self.kwargs.get('item_id'))
+        return object

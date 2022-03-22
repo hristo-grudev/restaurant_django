@@ -69,3 +69,6 @@ class OrderDetails(models.Model):
     completed = models.BooleanField(
         default=False
     )
+
+    def total_price(self):
+        return self.pcs * self.food_and_drinks.price

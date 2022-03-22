@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, CreateView, TemplateView
 
-from restaurant_project.kitchen.forms import EditItemFrom, DeleteOrderDetailsForm, CompleteItemForm
+from restaurant_project.kitchen.forms import EditItemFrom, DeleteOrderDetailsForm, CompleteItemForm, CreateItemFrom
 from restaurant_project.kitchen.models import FoodAndDrinks
 from restaurant_project.waiters.models import Orders, OrderDetails
 
@@ -13,11 +13,11 @@ class KitchenHomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        orders = Orders.objects.filter(status=False)
-        orders_ids = [order.id for order in orders]
-        order_items = OrderDetails.objects.filter(order_id__in=orders_ids)
-        print(order_items)
+        user_group_all = self.request.user.groups.all()
+        user_group = user_group_all[0]
+        order_items = OrderDetails.objects.filter(completed=False).filter(food_and_drinks__category__group=user_group)
         context['order_items'] = order_items
+        context['user_group'] = user_group
 
         return context
 
@@ -36,16 +36,16 @@ class ItemEditView(UpdateView):
         kwargs['user'] = self.request.user
         return kwargs
 
-    def get_queryset(self):
-        return super() \
-            .get_queryset() \
-            .prefetch_related('ingredients')
+    # def get_queryset(self):
+    #     return super() \
+    #         .get_queryset() \
+    #         .prefetch_related('ingredients')
 
 
 class ItemCreateView(CreateView):
     model = FoodAndDrinks
     template_name = 'kitchen/item_create.html'
-    form_class = DeleteOrderDetailsForm
+    form_class = CreateItemFrom
     success_url = reverse_lazy('kitchen home view')
 
     def get_form_kwargs(self):
@@ -58,12 +58,11 @@ class ItemCreateView(CreateView):
     #         .get_queryset() \
     #         .prefetch_related('ingredients')
 
+
 class CompleteItemView(UpdateView):
     model = OrderDetails
     template_name = 'kitchen/complete_item.html'
     form_class = CompleteItemForm
-    
 
     def get_success_url(self):
         return reverse_lazy('kitchen home view')
-

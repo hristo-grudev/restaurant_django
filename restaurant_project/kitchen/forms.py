@@ -48,6 +48,7 @@ class CreateItemFrom(BootstrapFormMixin, ModelForm):
         model = FoodAndDrinks
         exclude = ('user',)
 
+
 class CreateOrderForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -76,6 +77,7 @@ class CreateOrderDetailsForm(ModelForm):
 
         }
 
+
 class DeleteOrderDetailsForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -89,6 +91,11 @@ class CompleteItemForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+    def save(self):
+        item = super().save(commit=False)
+        item.completed = True
+        item.save()
+
     class Meta:
         model = OrderDetails
-        fields = '__all__'
+        fields = ('completed',)

@@ -6,102 +6,180 @@
         Маса {{ pk }}
     </h1>
     {% if not order %}
-        <div class="row">
-            <div class="col-lg-3"></div>
-            <div class="col-lg-6">
+        <div class="row d-flex justify-content-center align-content-center">
+            <div class="text-center">
                 <form method="post" class="container mb-5" action="{% url 'order start' pk %}">
                     {% csrf_token %}
                     {{ order_form }}
-                    <button class="btn btn-primary mt-2" type="submit">Start order</button>
+                    <button class="btn btn-primary mt-2" type="submit">Започни поръчка</button>
                 </form>
             </div>
-            <div class="col-lg-3"></div>
         </div>
     {% else %}
-    <div class="container mb-5">
-        <div class="row mb-5">
-        {% for cat in categories %}
-            <div class="card ml-3 mb-3" style="width: 10rem;">
-{#                <img src="{{ cat.image.url }}"#}
-{#                     class="card-img-top" alt="Photo description">#}
-                <div class="card-body">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    {% for cat in categories %}
+                        <li class="nav-item active">
+                            <a href="{% url 'table details' pk %}?category={{ cat.id }}"
+                               class="btn btn-primary">{{ cat.name }}</a>
+                        </li>
+                    {% endfor %}
 
-{#                    <h5 class="card-title">{{ cat.name }}</h5>#}
-                    <!-- Button to the Photo Details Page -->
-                    <a href="{% url 'table details' pk %}?category={{ cat.id }}" class="btn btn-primary">{{ cat.name }}</a>
+                </ul>
+                <form role="form" method="GET" class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="text" name="item" placeholder="Търси" aria-label="Search">
+                    <button class="btn btn-primary my-2 my-sm-0" type="submit">Търси</button>
+                </form>
+            </div>
+        </nav>
+        <div class="container mb-5">
+            <div class="row">
+                <div class="col-lg-6 mx-auto">
+                    <div class="card ">
+                        <div class="card-header">
+                            {% for item in searched_items %}
+                                <div class="d-flex justify-content-between">
+                                    <form method="post" action="{% url 'order add item' pk %}">
+                                        {% csrf_token %}
+                                        {{ order_details_form.order }}
+                                        <input type="text" value="{{ item.name }}" disabled readonly>
+                                        <input type="hidden" name="food_and_drinks" id="id_food_and_drinks"
+                                               value="{{ item.id }}" required>
+                                        {{ order_details_form.pcs }}
+                                        <button>Добави</button>
+                                    </form>
+                                </div>
+                            {% endfor %}
+                            {% for item in items %}
+                                <div class="d-flex justify-content-between">
+                                    <form method="post" action="{% url 'order add item' pk %}">
+                                        {% csrf_token %}
+                                        {{ order_details_form.order }}
+                                        <input type="text" value="{{ item.name }}" disabled readonly>
+                                        <input type="hidden" name="food_and_drinks" id="id_food_and_drinks"
+                                               value="{{ item.id }}" required>
+                                        {{ order_details_form.pcs }}
+                                        <button>Добави</button>
+                                    </form>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
             </div>
-        {% endfor %}
         </div>
 
-    </div>
-        <div class="d-flex justify-content-between">
-            <form method="GET" >
-                <input type="text" name="item">
-                <button class="btn btn-primary mt-2" type="submit">Търси</button>
-            </form>
-        </div>
-    <div>
-        {% for item in searched_items %}
-            <div class="d-flex justify-content-between">
-{#                    <p>{{ item.name }}</p>#}
-{#                    <a class="btn btn-primary" href="{% url 'order add item' pk %}?order={{ order.0.id }}&item={{ item.id }}">Добави</a>#}
-                <form method="post" action="{% url 'order add item' pk %}">
-                    {% csrf_token %}
-                    {{ order_details_form.order }}
-                    <input type="text" value="{{ item.name }}" disabled readonly>
-                    <input type="hidden" name="food_and_drinks" id="id_food_and_drinks" value="{{ item.id }}" required>
-                    {{ order_details_form.pcs }}
-                    <button>Добави</button>
-                </form>
-            </div>
-        {% endfor %}
-    </div>
-    <div>
-        {% for item in items %}
-            <div class="d-flex justify-content-between">
-{#                    <p>{{ item.name }}</p>#}
-{#                    <a class="btn btn-primary" href="{% url 'order add item' pk %}?order={{ order.0.id }}&item={{ item.id }}">Добави</a>#}
-                <form method="post" action="{% url 'order add item' pk %}">
-                    {% csrf_token %}
-                    {{ order_details_form.order }}
-                    <input type="text" value="{{ item.name }}" disabled readonly>
-                    <input type="hidden" name="food_and_drinks" id="id_food_and_drinks" value="{{ item.id }}" required>
-                    {{ order_details_form.pcs }}
-                    <button>Добави</button>
-                </form>
-            </div>
-        {% endfor %}
-    </div>
-        <div>
-            <br>
-        </div>
     {% endif %}
-    <div class="float-left">
-        {% for item in ordered_items %}
 
-            {% if item.id not in sent_items %}
-                <form method="post" action="{% url 'remove item' pk item.id %}">
-                    <div class="d-flex justify-content-between">
-                        {% csrf_token %}
-                        {{ delete_form }}
-                        <p>{{ item.food_and_drinks }}</p>
-                        <p>{{ item.pcs|floatformat:0 }}</p>
-                        <button>Откажи</button>
+
+    <div class="event-schedule-area-two bg-color pad100">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title text-center">
+                        <div class="title-text">
+                            <h2>Поръчка</h2>
+                        </div>
                     </div>
+                </div>
+                <!-- /.col end-->
+            </div>
+            <!-- row end-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade active show" id="home" role="tabpanel">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center" scope="col">#</th>
+                                        <th scope="col">Ястие/напитка</th>
+                                        <th scope="col">Наименование</th>
+                                        <th scope="col">Брой</th>
+                                        <th scope="col">Ед. Цена</th>
+                                        <th scope="col">Цена</th>
+                                        <th class="text-center" scope="col">Статус</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for item in ordered_items %}
+                                        <tr class="inner-box">
+                                            <th scope="row">
+                                                <div class="r-no">
+                                                    <span>{{ forloop.counter }}</span>
+                                                </div>
+                                            </th>
+                                            <td>
+                                                <div class="event-img">
+                                                    <img style="width: auto; height: 50px;" class="rounded float-right"
+                                                         src="{{ item.food_and_drinks.image.url }}"
+                                                         alt="{{ item.food_and_drinks }}"/>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="r-no">
+                                                    <span>{{ item.food_and_drinks }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="r-no">
+                                                    <span>{{ item.pcs|floatformat:0 }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="r-no">
+                                                    <span>{{ item.food_and_drinks.price|floatformat:2 }} лева</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="r-no">
+                                                    <span>{{ item.total_price|floatformat:2 }} лева</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                {% if item.id not in sent_items %}
+                                                    <div class="primary-btn">
+                                                        <form method="post" action="{% url 'remove item' pk item.id %}">
+                                                            {% csrf_token %}
+                                                            {{ delete_form }}
+                                                            <button type="submit"
+                                                                    href="{% url 'remove item' pk item.id %}"
+                                                                    class="btn btn-warning">Откажи
+                                                            </button>
+                                                        </form>
+                                                    </div>
 
-                </form>
-                {% else %}
-                <form method="post" action="{% url 'remove item' pk item.id %}">
-                    <div class="d-flex justify-content-between">
-                        {% csrf_token %}
-                        <p>{{ item.food_and_drinks }}</p>
-                        <p>{{ item.pcs|floatformat:0 }}</p>
-                        <p>Готов</p>
+                                                {% else %}
+                                                    <div class="r-no">
+                                                        <span>Готово</span>
+                                                    </div>
+
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+
+                                    {% endfor %}
+                                    <tr>
+                                        <th class="text-center" scope="col"></th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                        <th scope="col">Сума за плащане:</th>
+                                        <th class="text-center" scope="col">{{ total_sum }} лева</th>
+                                        <th class="text-center" scope="col"></th>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-
-                </form>
-            {% endif %}
-        {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <a href="#" class="btn btn-success">Завърши поръчка</a>
     </div>
 {% endblock %}

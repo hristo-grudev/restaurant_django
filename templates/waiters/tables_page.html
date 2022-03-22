@@ -10,21 +10,20 @@
         <div class="row mb-5">
             {% for table in tables %}
                 <div class="card ml-3 mb-3" style="width: 18rem;">
-                    <!-- Image -->
-                    {% if table.id not in occupied_table %}
-                    <img src="{% static 'images/free_table.jpg' %}"
-                         class="card-img-top" alt="Photo description">
                     <div class="card-body">
-                    {% else %}
-                    <img src="{% static 'images/occupied_table.jpg' %}"
-                         class="card-img-top" alt="Photo description">
-                    <div class="card-body">
-                    {% endif %}
-                        <h5 class="card-title">Table: {{ table.name }}</h5>
-                        <!-- First 30 chars from the description -->
-                        <p class="card-text">Up to: {{ table.max_seats }} seats.</p>
-                        <!-- Button to the Photo Details Page -->
-                        <a href="{% url 'table details' table.id %}" class="btn btn-primary">Go to</a>
+                        <h5 class="card-title">Маса: {{ table.name }}</h5>
+                        <p class="card-text">До: {{ table.max_seats }} места.</p>
+
+                        <a href="{% url 'table details' table.id %}" class="btn btn-default">
+                        {% if table.id not in occupied_table %}
+                        <img src="{% static 'images/free_table.jpg' %}"
+                             class="card-img-top" alt="Photo description">
+                        {% else %}
+                        <img src="{% static 'images/occupied_table.jpg' %}"
+                             class="card-img-top" alt="Photo description">
+                        {% endif %}
+
+                    </a>
                     </div>
                 </div>
             {% endfor %}
