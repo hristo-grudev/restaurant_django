@@ -76,26 +76,3 @@ class CreateOrderDetailsForm(ModelForm):
             'order': HiddenInput(),
 
         }
-
-
-class DeleteOrderDetailsForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    class Meta:
-        model = OrderDetails
-        fields = '__all__'
-
-
-class CompleteItemForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def save(self):
-        item = super().save(commit=False)
-        item.completed = True
-        item.save()
-
-    class Meta:
-        model = OrderDetails
-        fields = ('completed',)

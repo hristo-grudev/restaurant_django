@@ -72,7 +72,7 @@
 
     {% endif %}
 
-
+    {% if order %}
     <div class="event-schedule-area-two bg-color pad100">
         <div class="container">
             <div class="row">
@@ -104,7 +104,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for item in ordered_items %}
+                                    {% for item in order.orderdetails_set.all %}
                                         <tr class="inner-box">
                                             <th scope="row">
                                                 <div class="r-no">
@@ -141,14 +141,8 @@
                                             <td>
                                                 {% if item.id not in sent_items %}
                                                     <div class="primary-btn">
-                                                        <form method="post" action="{% url 'remove item' pk item.id %}">
-                                                            {% csrf_token %}
-                                                            {{ delete_form }}
-                                                            <button type="submit"
-                                                                    href="{% url 'remove item' pk item.id %}"
-                                                                    class="btn btn-warning">Откажи
-                                                            </button>
-                                                        </form>
+                                                        <a href="{% url 'remove item' pk item.id %}"
+                                                           class="btn btn-warning">Откажи</a>
                                                     </div>
 
                                                 {% else %}
@@ -179,7 +173,9 @@
             </div>
         </div>
     </div>
-    <div>
-        <a href="#" class="btn btn-success">Завърши поръчка</a>
-    </div>
+
+        <div>
+            <a href="{% url 'complete order' order.id %}" class="btn btn-success">Завърши поръчка</a>
+        </div>
+    {% endif %}
 {% endblock %}

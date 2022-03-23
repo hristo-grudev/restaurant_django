@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, UpdateView, CreateView, TemplateView
+from django.views.generic import UpdateView, CreateView, TemplateView
 
-from restaurant_project.kitchen.forms import EditItemFrom, DeleteOrderDetailsForm, CompleteItemForm, CreateItemFrom
-from restaurant_project.kitchen.models import FoodAndDrinks
+from restaurant_project.kitchen.forms import EditItemFrom, CreateItemFrom
+from restaurant_project.kitchen.models import FoodAndDrinks, Ingredients
 from restaurant_project.waiters.models import Orders, OrderDetails
 
 
@@ -36,11 +36,6 @@ class ItemEditView(UpdateView):
         kwargs['user'] = self.request.user
         return kwargs
 
-    # def get_queryset(self):
-    #     return super() \
-    #         .get_queryset() \
-    #         .prefetch_related('ingredients')
-
 
 class ItemCreateView(CreateView):
     model = FoodAndDrinks
@@ -59,10 +54,14 @@ class ItemCreateView(CreateView):
     #         .prefetch_related('ingredients')
 
 
-class CompleteItemView(UpdateView):
-    model = OrderDetails
-    template_name = 'kitchen/complete_item.html'
-    form_class = CompleteItemForm
+def complete_item(request, pk):
+    item = OrderDetails.objects.get(pk=pk)
+    item.completed = True
+    ingredients = item.food_and_drinks.foodanddrinkstoingredients_set.all()
+    for ingr in ingredients:
+        ingredient = Ingredients.objects.get(pk=ingr.ingredient.id)
+        ingredient.quantity -= ingr.quantity
+        ingredient.save()
 
-    def get_success_url(self):
-        return reverse_lazy('kitchen home view')
+    item.save()
+    return redirect('kitchen home view')

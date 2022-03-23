@@ -67,11 +67,7 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <form method="post" action="{% url 'complete item view' item.id %}">
-                                                        {% csrf_token %}
-                                                        {{ complete_form }}
-                                                        <button type="submit">Готово</button>
-                                                </form>
+                                                <a href="{% url 'complete item view' item.id %}" class="btn btn-warning">Готово</a>
                                             </td>
                                         </tr>
                                         {% endfor %}

@@ -48,6 +48,9 @@ class Orders(models.Model):
         on_delete=models.DO_NOTHING,
     )
 
+    def __str__(self):
+        return f'Table: {self.table.name}'
+
 
 class OrderDetails(models.Model):
     PCS_MIN_VALUE = 0.0
