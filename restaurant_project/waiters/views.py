@@ -4,12 +4,14 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView, CreateView
 
+from restaurant_project.common.helpers import group_required
+from restaurant_project.common.view_mixins import WaitersAccess
 from restaurant_project.kitchen.forms import CreateOrderForm, CreateOrderDetailsForm
 from restaurant_project.kitchen.models import Categories, FoodAndDrinks
 from restaurant_project.waiters.models import Tables, Orders, OrderDetails
 
 
-class TablesView(ListView):
+class TablesView(WaitersAccess, ListView):
     template_name = 'waiters/tables_page.html'
     model = Tables
 
@@ -22,7 +24,7 @@ class TablesView(ListView):
         return context
 
 
-class TableDetailsView(TemplateView):
+class TableDetailsView(WaitersAccess, TemplateView):
     template_name = 'waiters/table_details.html'
     model = Orders
 
@@ -66,7 +68,7 @@ class TableDetailsView(TemplateView):
         return reverse_lazy('table details', kwargs={'pk': self.object.id})
 
 
-class StartOrder(CreateView):
+class StartOrder(WaitersAccess, CreateView):
     template_name = 'waiters/new_order.html'
     model = Orders
     form_class = CreateOrderForm
@@ -75,7 +77,7 @@ class StartOrder(CreateView):
         return reverse_lazy('table details', kwargs={'pk': self.object.table.id})
 
 
-class AddItemInTheOrder(CreateView):
+class AddItemInTheOrder(WaitersAccess, CreateView):
     template_name = 'waiters/add_item.html'
     model = OrderDetails
     form_class = CreateOrderDetailsForm
@@ -84,11 +86,14 @@ class AddItemInTheOrder(CreateView):
         return reverse_lazy('table details', kwargs={'pk': self.object.order.table.id})
 
 
+@group_required(allowed_roles=['Waiters'])
 def remove_item(request, pk, *args, **kwargs):
     item = OrderDetails.objects.get(pk=kwargs.get('item_id'))
     item.delete()
     return redirect('table details', pk)
 
+
+@group_required(allowed_roles=['Waiters'])
 def complete_order(request, pk):
     print(pk)
     item = Orders.objects.get(pk=pk)
