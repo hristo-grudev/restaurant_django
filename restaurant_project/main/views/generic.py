@@ -1,3 +1,4 @@
+from django.shortcuts import redirect
 from django.views.generic import TemplateView, ListView
 
 from restaurant_project.kitchen.models import FoodAndDrinks, Categories

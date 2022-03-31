@@ -1,20 +1,25 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Log In</title>
-</head>
-<body>
-    <h1>Login Page</h1>
+
+{% block page_content %}
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+
     <form method="POST">
         {% csrf_token %}
         {{ form }}
         <button type="submit">Log in</button>
 
 
-        <img src="{% static 'images/logo.png' %}">
+{#        <img src="{% static 'images/Logo.jpg' %}">#}
 
     </form>
-</body>
-</html>
+
+    <!-- Remind Passowrd -->
+    <div id="formFooter">
+      <a class="underlineHover" href="{% url 'register user' %}">Register</a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

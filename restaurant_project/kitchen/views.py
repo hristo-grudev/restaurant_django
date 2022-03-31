@@ -1,9 +1,10 @@
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import UpdateView, CreateView, TemplateView
+from django.views.generic import UpdateView, CreateView, TemplateView, ListView
 
-from restaurant_project.kitchen.forms import EditItemFrom, CreateItemFrom
-from restaurant_project.kitchen.models import FoodAndDrinks, Ingredients
+from restaurant_project.common.helpers import group_required
+from restaurant_project.kitchen.forms import EditItemFrom, CreateItemFrom, AddIngredientForm
+from restaurant_project.kitchen.models import FoodAndDrinks, Ingredients, Categories, FoodAndDrinksToIngredients
 from restaurant_project.waiters.models import Orders, OrderDetails
 
 
@@ -29,12 +30,28 @@ class ItemEditView(UpdateView):
     model = FoodAndDrinks
     template_name = 'kitchen/item_edit.html'
     form_class = EditItemFrom
-    success_url = reverse_lazy('kitchen home view')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        searched_item_string = self.request.GET.get('item')
+        if searched_item_string:
+            searched_items = FoodAndDrinksToIngredients.objects.filter(ingredient__name__contains=searched_item_string)
+            context['searched_items'] = searched_items
+
+        current_ingredient = FoodAndDrinksToIngredients.objects.filter(food_and_drinks=self.object.id)
+        context['current_ingredient'] = current_ingredient
+        ingredient_form = AddIngredientForm
+        context['ingredient_form'] = ingredient_form
+
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
+
+    def get_success_url(self):
+        return reverse_lazy('edit menu view', kwargs={'pk': self.object.category.id})
 
 
 class ItemCreateView(CreateView):
@@ -65,3 +82,41 @@ def complete_item(request, pk):
 
     item.save()
     return redirect('kitchen home view')
+
+
+class EditMenuView(ListView):
+    template_name = 'kitchen/menu_edit.html'
+    model = FoodAndDrinks
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        categories = Categories.objects.filter(group=self.request.user.groups.all()[0])
+
+        context['categories'] = categories
+
+        return context
+
+    def get_queryset(self):
+        return super() \
+            .get_queryset() \
+            .filter(category_id=self.kwargs['pk'])
+
+@group_required(allowed_roles=['Cooks', 'Bartenders'])
+def remove_ingredient(request, pk, *args, **kwargs):
+    item = FoodAndDrinksToIngredients.objects.get(pk=kwargs.get('ingredient_id'))
+    item.delete()
+    return redirect('item edit view', pk)
+
+def add_ingredient_view(request, pk, *args, **kwargs):
+    if request.method == 'POST':
+        ingredient = Ingredients.objects.get(id=request.POST['ingredient'])
+        food_and_drinks = FoodAndDrinks.objects.get(id=pk)
+        quantity = request.POST['quantity']
+        FoodAndDrinksToIngredients.objects.create(
+            ingredient=ingredient,
+            food_and_drinks=food_and_drinks,
+            quantity=quantity,
+        )
+        print(food_and_drinks)
+
+    return redirect('item edit view', pk)

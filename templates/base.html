@@ -27,26 +27,43 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'index' %}">Home</a>
             </li>
-            {% if request.user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'tables list' %}">Waiters Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'kitchen home view' %}">Kitchen Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'item create view' %}">Create Items</a>
-                </li>
+
+                {% if user.groups.all.0.name == 'Waiters' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'tables list' %}">Waiters Home</a>
+                    </li>
+                {% endif %}
+                {% if user.groups.all.0.name == 'Customers' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'menu view' 1 %}">Меню</a>
+                    </li>
+                {% endif %}
+                {% if user.groups.all.0.name == 'Bartenders' or user.groups.all.0.name == 'Cooks' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'kitchen home view' %}">Kitchen Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'item create view' %}">Create Items</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'edit menu view' 0 %}">Edit Menu</a>
+                    </li>
+                {% endif %}
+
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'contacts view' %}">Контакти</a>
                 </li>
+            {% if request.user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'menu view' 1 %}">Меню</a>
+                    <a class="nav-link" href="{% url 'details user' request.user.id %}">Профил</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout user' %}">Logout</a>
                 </li>
-
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login user' %}">LogIn</a>
+                </li>
             {% endif %}
             {#            {% if request.user.is_authenticated %}#}
             {#                <li class="nav-item">#}
@@ -78,11 +95,9 @@
 {% block bottom_page_content %}
 {% endblock %}
 
-<!-- Page Footer -->
-<footer class="fixed-bottom card-footer ">
-    <div>Tiger</div>
-</footer>
-<!-- End Page Footer -->
+{#<footer class="fixed-bottom card-footer ">#}
+{#    <div>Tiger</div>#}
+{#</footer>#}
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

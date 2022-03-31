@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.contrib.auth.decorators import permission_required
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView, CreateView
@@ -93,6 +94,7 @@ def remove_item(request, pk, *args, **kwargs):
     return redirect('table details', pk)
 
 
+#@permission_required('Waiters')
 @group_required(allowed_roles=['Waiters'])
 def complete_order(request, pk):
     print(pk)

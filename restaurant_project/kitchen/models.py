@@ -25,6 +25,9 @@ class Ingredients(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ['name']
+
 
 class Categories(models.Model):
     CATEGORY_MAX_LENGTH = 30
@@ -105,3 +108,4 @@ class FoodAndDrinksToIngredients(models.Model):
 
     def __str__(self):
         return self.food_and_drinks.name
+

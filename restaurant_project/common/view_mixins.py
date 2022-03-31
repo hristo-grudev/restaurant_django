@@ -25,3 +25,5 @@ class CooksAccess(AccessRedirect):
 
 class WaitersAccess(AccessRedirect):
     group = "Waiters"
+
+
