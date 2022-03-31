@@ -7,6 +7,7 @@ from django.views import View
 from django.views.generic import CreateView, DetailView
 
 from restaurant_project.accounts.forms import CreateProfileForm
+from restaurant_project.accounts.models import Profile
 
 user_model = get_user_model()
 
@@ -33,14 +34,10 @@ class UserLoginView(LoginView):
 
 
 class UserDetailsView(DetailView):
-    model = user_model
+    model = Profile
     template_name = 'accounts/profile_details.html'
     context_object_name = 'profile'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        return context
 
 
 class EditProfileView:
