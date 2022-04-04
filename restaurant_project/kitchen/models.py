@@ -49,7 +49,7 @@ class Categories(models.Model):
 
 
 class FoodAndDrinks(models.Model):
-    FOOD_AND_DRINKS_NAME_MAX_LENGTH = 30
+    FOOD_AND_DRINKS_NAME_MAX_LENGTH = 50
     MIN_PRICE_VALUE = 0.0
     name = models.CharField(
         max_length=FOOD_AND_DRINKS_NAME_MAX_LENGTH,

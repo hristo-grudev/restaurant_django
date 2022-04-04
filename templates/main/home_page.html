@@ -6,17 +6,21 @@
         <img style="width: 100%"
              src="https://assets.londonist.com/uploads/2018/12/i875/niche_gluten_free_london.jpg" alt="">
         <div class="position-sticky">
-            <h1 class="display-4">Welcome to The Restaurant</h1>
-            <p class="lead">Eat healthy.</p>
+            <h1 class="display-4">Добре дошли в ресторантът</h1>
+            <p class="lead">Яжте здравословно.</p>
             <hr class="my-4">
             <div class="flex-row">
 
-                <!-- Login Button -->
-                <a href="{% url 'login user' %}" class="btn btn-lg btn-secondary">Login</a>
+                {% if not user.is_authenticated %}
 
-                <!-- Register Button -->
-                <a href="{% url 'register user' %}" class="btn btn-lg btn-secondary">Register</a>
+                    <a href="{% url 'login user' %}" class="btn btn-lg btn-secondary">Вход</a>
+
+                    <a href="{% url 'register user' %}" class="btn btn-lg btn-secondary">Регистрация</a>
+                {% else %}
+                    <a href="{% url 'menu view' 1 %}" class="btn btn-lg btn-secondary">Към нашето меню</a>
+                {% endif %}
             </div>
+
         </div>
     </div>
 {% endblock %}

@@ -75,3 +75,6 @@ class OrderDetails(models.Model):
 
     def total_price(self):
         return self.pcs * self.food_and_drinks.price
+
+    def __str__(self):
+        return self.food_and_drinks.name

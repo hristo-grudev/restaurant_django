@@ -10,10 +10,8 @@ class AccessRedirect(AccessMixin):
             # This will redirect to the login view
             return redirect('login user')
         if not self.request.user.groups.filter(name=self.group).exists():
-            # Redirect the user to somewhere else - add your URL here
             return redirect('index')
 
-        # Checks pass, let http method handlers process the request
         return super().dispatch(request, *args, **kwargs)
 
 

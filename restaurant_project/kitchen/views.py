@@ -64,11 +64,7 @@ class ItemCreateView(CreateView):
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
-    #
-    # def get_queryset(self):
-    #     return super() \
-    #         .get_queryset() \
-    #         .prefetch_related('ingredients')
+
 
 
 def complete_item(request, pk):

@@ -10,14 +10,21 @@
 
 
                 <div class="d-flex flex-column">
-                    <h5><u>Name:</u> {{ profile.first_name }} {{ profile.last_name }}</h5>
+                    <h5><u>Име:</u> {{ profile.first_name }} {{ profile.last_name }}</h5>
                     <h5><u>Email:</u> {{ profile.user.email }}</h5>
-                    <h5><u>Role:</u> {{ profile.user.groups.all.0 }}</h5>
+                    <h5><u>Акаунт:</u> {{ profile.user.groups.all.0 }}</h5>
                     {% if profile.description %}
-                        <h5><u>Description:</u> {{ profile.description }}</h5>
+                        <h5><u>Описание:</u> {{ profile.description }}</h5>
                     {% endif %}
                 </div>
+                {% for message in messages %}
+                <p class="text-success">{{ message }}</p>
+                {% endfor %}
+                {% ifequal profile.user.id request.user.id %}
+                <a href="{% url 'edit profile' profile.user.id %}" class="btn btn-success">Редактирай</a>
+                {% endifequal %}
             </div>
+
         </div>
     </div>
 

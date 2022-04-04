@@ -31,7 +31,6 @@ class CreateProfileForm(BootstrapFormMixin, auth_forms.UserCreationForm):
             last_name=self.cleaned_data['last_name'],
             picture=self.cleaned_data['picture'],
             description=self.cleaned_data['description'],
-            gender=self.cleaned_data['gender'],
             user=user,
         )
         customer = Group.objects.get(name='Customers')
@@ -61,3 +60,53 @@ class CreateProfileForm(BootstrapFormMixin, auth_forms.UserCreationForm):
                 }
             ),
         }
+
+
+class EditProfileForm(BootstrapFormMixin, auth_forms.UserChangeForm):
+    first_name = forms.CharField(
+        max_length=Profile.FIRST_NAME_MAX_LENGTH,
+    )
+    last_name = forms.CharField(
+        max_length=Profile.LAST_NAME_MAX_LENGTH,
+    )
+    picture = forms.URLField()
+    description = forms.CharField(
+        widget=forms.Textarea,
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._init_bootstrap_form_controls('form-control')
+
+
+    class Meta:
+        model = get_user_model()
+        fields = ('first_name', 'last_name', 'picture', 'description', )
+        widgets = {
+            'first_name': forms.TextInput(
+                attrs={
+                    'placeholder': 'Enter first name',
+                }
+            ),
+            'last_name': forms.TextInput(
+                attrs={
+                    'placeholder': 'Enter last name',
+                }
+            ),
+            'picture': forms.TextInput(
+                attrs={
+                    'placeholder': 'Enter URL',
+                }
+            ),
+        }
+
+class PasswordChangingForm(BootstrapFormMixin, auth_forms.PasswordChangeForm):
+    OLD_PASSWORD_LABEL = 'Стара парола'
+    OLD_NEW_PASSWOD1_LABEL = 'Нова парола'
+    OLD_NEW_PASSWOD2_LABEL = 'Потвърдете новата парола'
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._init_bootstrap_form_controls('form-control')
+        self.fields['old_password'].label = self.OLD_PASSWORD_LABEL
+        self.fields['new_password1'].label = self.OLD_NEW_PASSWOD1_LABEL
+        self.fields['new_password2'].label = self.OLD_NEW_PASSWOD2_LABEL

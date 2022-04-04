@@ -25,12 +25,12 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'index' %}">Home</a>
+                <a class="nav-link" href="{% url 'index' %}">Начало</a>
             </li>
 
                 {% if user.groups.all.0.name == 'Waiters' %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'tables list' %}">Waiters Home</a>
+                        <a class="nav-link" href="{% url 'tables list' %}">Маси</a>
                     </li>
                 {% endif %}
                 {% if user.groups.all.0.name == 'Customers' %}
@@ -40,13 +40,13 @@
                 {% endif %}
                 {% if user.groups.all.0.name == 'Bartenders' or user.groups.all.0.name == 'Cooks' %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'kitchen home view' %}">Kitchen Home</a>
+                        <a class="nav-link" href="{% url 'kitchen home view' %}">{% if user.groups.all.0.name == 'Bartenders' %}Бар{% else %}Кухня{% endif %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'item create view' %}">Create Items</a>
+                        <a class="nav-link" href="{% url 'item create view' %}">Нова рецепта</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'edit menu view' 0 %}">Edit Menu</a>
+                        <a class="nav-link" href="{% url 'edit menu view' 0 %}">Редактирай рецепта</a>
                     </li>
                 {% endif %}
 
@@ -55,33 +55,16 @@
                 </li>
             {% if request.user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'details user' request.user.id %}">Профил</a>
+                    <a class="nav-link" href="{% url 'details profile' request.user.id %}">Профил</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout user' %}">Logout</a>
+                    <a class="nav-link" href="{% url 'logout user' %}">Изход</a>
                 </li>
             {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login user' %}">LogIn</a>
+                    <a class="nav-link" href="{% url 'login user' %}">Вход</a>
                 </li>
             {% endif %}
-            {#            {% if request.user.is_authenticated %}#}
-            {#                <li class="nav-item">#}
-            {#                    <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>#}
-            {#                </li>#}
-            {#                {% if not hide_additional_nav_items %}#}
-            {#                    <li class="nav-item">#}
-            {#                        <a class="nav-link" href="{% url 'create pet' %}">Add Pet</a>#}
-            {#                    </li>#}
-            {#                    <li class="nav-item">#}
-            {#                        <a class="nav-link" href="{% url 'create pet photo' %}">Add Photo</a>#}
-            {#                    </li>#}
-            {#                {% endif %}#}
-            {#                <li class="nav-item">#}
-            {#                    <a class="nav-link" href="{% url 'profile details' request.user.id %}">Profile</a>#}
-            {#                </li>#}
-            {#            {% endif %}#}
-        </ul>
     </div>
 </nav>
 <!-- End Navigation Bar -->

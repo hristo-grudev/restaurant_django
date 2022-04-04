@@ -57,7 +57,7 @@ class TableDetailsView(WaitersAccess, TemplateView):
             context['order_details_form'] = order_details_form
             context['order'] = order[0]
             ordered_items = order[0].orderdetails_set.all()
-            context['total_sum'] = sum([item.total_price() for item in ordered_items])
+            context['total_sum'] = sum([item.total_price() for item in ordered_items if item.completed==True])
             sent_items_id = OrderDetails.objects.filter(order=order[0]).filter(completed=True).values('id')
             context['sent_items'] = [item['id'] for item in sent_items_id]
 
