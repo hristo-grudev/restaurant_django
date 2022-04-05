@@ -9,7 +9,10 @@ SECRET_KEY = 'django-insecure-441@1$+c-&w)mndl0w&$du__39&@iah*l36e7#6@^hr73fqksm
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.230', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['192.168.1.230',
+                 'localhost',
+                 '127.0.0.1',
+                 'restaurant-app-bg.herokuapp.com/']
 
 DJANGO_APPS = (
     'django.contrib.admin',
