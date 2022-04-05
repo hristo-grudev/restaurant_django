@@ -3,16 +3,17 @@ from pathlib import Path
 
 from django.urls import reverse_lazy
 
+from restaurant_project.utils import is_production
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-441@1$+c-&w)mndl0w&$du__39&@iah*l36e7#6@^hr73fqksm'
+APP_ENV = os.getenv('APP_ENV')
 
-DEBUG = False
+SECRET_KEY = os.getenv('SECRET_KEY')
 
-ALLOWED_HOSTS = ['192.168.1.230',
-                 'localhost',
-                 '127.0.0.1',
-                 'restaurant-app-bg.herokuapp.com']
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(' ')
 
 DJANGO_APPS = (
     'django.contrib.admin',
@@ -69,28 +70,31 @@ WSGI_APPLICATION = 'restaurant_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dceth2tqqv4m55',
-        'USER': 'cckgsbajqkwllu',
-        'PASSWORD': 'bd016e30fd9782cc733efb21443dcf6c3e92674cc94d554b543ec348d6673617',
-        'HOST': 'ec2-63-35-156-160.eu-west-1.compute.amazonaws.com',
-        'PORT': '5432',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     },
 }
 
-AUTH_PASSWORD_VALIDATORS = [
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    # },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    # },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    # },
-    # {
-    #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    # },
-]
+AUTH_PASSWORD_VALIDATORS = []
+
+if is_production():
+    AUTH_PASSWORD_VALIDATORS.extend([
+        {
+            'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        },
+        {
+            'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        },
+        {
+            'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        },
+        {
+            'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        },
+    ])
 
 LANGUAGE_CODE = 'en-us'
 
@@ -122,3 +126,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.RestaurantUser'
 
 LOGIN_URL = reverse_lazy('login user')
+
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'filters': [],
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.db.backend': {
+            'level': 'INFO',
+            'handlers': ['console'],
+        },
+    },
+}
