@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath restaurant_project restaurant_project.wsgi
+web: gunicorn restaurant_project.wsgi
