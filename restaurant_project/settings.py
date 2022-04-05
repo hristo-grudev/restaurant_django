@@ -3,7 +3,7 @@ from pathlib import Path
 
 from django.urls import reverse_lazy
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-441@1$+c-&w)mndl0w&$du__39&@iah*l36e7#6@^hr73fqksm'
 
