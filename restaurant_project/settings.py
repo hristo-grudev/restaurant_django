@@ -3,11 +3,11 @@ from pathlib import Path
 
 from django.urls import reverse_lazy
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = 'django-insecure-441@1$+c-&w)mndl0w&$du__39&@iah*l36e7#6@^hr73fqksm'
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['192.168.1.230',
                  'localhost',
@@ -106,11 +106,11 @@ USE_TZ = True
 #     os.path.join(BASE_DIR, 'staticfiles'),
 # )
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    BASE_DIR /'static',
+    os.path.join(BASE_DIR, 'static'),
 )
 
 MEDIA_URL = '/media/'
