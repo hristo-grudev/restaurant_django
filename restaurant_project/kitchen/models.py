@@ -1,6 +1,7 @@
 from django.contrib.auth.models import Group
 from django.core.validators import MinValueValidator
 from django.db import models
+from cloudinary import models as cloudinary_models
 
 from restaurant_project.accounts.models import RestaurantUser
 
@@ -36,8 +37,7 @@ class Categories(models.Model):
         max_length=CATEGORY_MAX_LENGTH,
     )
 
-    image = models.ImageField(
-    )
+    image = cloudinary_models.CloudinaryField('image')
 
     group = models.ForeignKey(
         Group,
@@ -72,8 +72,7 @@ class FoodAndDrinks(models.Model):
         auto_now_add=True,
     )
 
-    image = models.ImageField(
-    )
+    image = cloudinary_models.CloudinaryField('image')
 
     user = models.ForeignKey(
         RestaurantUser,
