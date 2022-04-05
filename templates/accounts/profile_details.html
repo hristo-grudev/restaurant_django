@@ -20,9 +20,9 @@
                 {% for message in messages %}
                 <p class="text-success">{{ message }}</p>
                 {% endfor %}
-                {% ifequal profile.user.id request.user.id %}
+                {% if profile.user.id == request.user.id %}
                 <a href="{% url 'edit profile' profile.user.id %}" class="btn btn-success">Редактирай</a>
-                {% endifequal %}
+                {% endif %}
             </div>
 
         </div>
