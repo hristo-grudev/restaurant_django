@@ -12,7 +12,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['192.168.1.230',
                  'localhost',
                  '127.0.0.1',
-                 'restaurant-app-bg.herokuapp.com/']
+                 'restaurant-app-bg.herokuapp.com']
 
 DJANGO_APPS = (
     'django.contrib.admin',
