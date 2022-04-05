@@ -65,11 +65,11 @@ WSGI_APPLICATION = 'restaurant_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'qwe123',
-        'HOST': '127.0.0.1',
-        'PORT': '5434',
+        'NAME': 'dceth2tqqv4m55',
+        'USER': 'cckgsbajqkwllu',
+        'PASSWORD': 'bd016e30fd9782cc733efb21443dcf6c3e92674cc94d554b543ec348d6673617',
+        'HOST': 'ec2-63-35-156-160.eu-west-1.compute.amazonaws.com',
+        'PORT': '5432',
     },
 }
 
