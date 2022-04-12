@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.views.generic import TemplateView, ListView
 
-from restaurant_project.kitchen.models import FoodAndDrinks, Categories
+from restaurant_project.main.models import FoodAndDrinks, Categories
 
 
 class HomeView(TemplateView):

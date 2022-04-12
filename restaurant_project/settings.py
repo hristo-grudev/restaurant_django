@@ -30,8 +30,6 @@ THIRD_PARTY_APPS = ()
 RESTAURANT_APPS = (
     'restaurant_project.accounts',
     'restaurant_project.main',
-    'restaurant_project.waiters',
-    'restaurant_project.kitchen',
 )
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + RESTAURANT_APPS

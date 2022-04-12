@@ -9,17 +9,15 @@ class AccessRedirect(AccessMixin):
         if not request.user.is_authenticated:
             # This will redirect to the login view
             return redirect('login user')
-        if not self.request.user.groups.filter(name=self.group).exists():
+        if not self.request.user.groups.filter(name__in=self.group.split(' ')).exists():
             return redirect('index')
 
         return super().dispatch(request, *args, **kwargs)
 
 
-class BartendersAccess(AccessRedirect):
-    group = "Bartenders"
+class BarAndKitchenAccess(AccessRedirect):
+    group = "Bartenders Cooks"
 
-class CooksAccess(AccessRedirect):
-    group = "Cooks"
 
 class WaitersAccess(AccessRedirect):
     group = "Waiters"
