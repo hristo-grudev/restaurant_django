@@ -39,9 +39,9 @@ class TableDetailsView(WaitersAccess, TemplateView):
             context['searched_items'] = searched_items
         # order form data
         waiter = self.request.user
-        table = Tables.objects.filter(id=self.kwargs['pk'])
+        table = Tables.objects.get(id=self.kwargs['pk'])
         data = {'waiter': waiter,
-                'table': table[0]}
+                'table': table}
         order_form = CreateOrderForm(initial=data)
         context['order_form'] = order_form
 
@@ -68,7 +68,7 @@ class TableDetailsView(WaitersAccess, TemplateView):
 
 
 class StartOrder(WaitersAccess, CreateView):
-    template_name = 'waiters/new_order.html'
+    template_name = 'waiters/remove_item.html'
     model = Orders
     form_class = CreateOrderForm
 
@@ -95,7 +95,6 @@ def remove_item(request, pk, *args, **kwargs):
 # @permission_required('Waiters')
 @group_required(allowed_roles=['Waiters'])
 def complete_order(request, pk):
-    print(pk)
     item = Orders.objects.get(pk=pk)
     item.status = True
     item.order_end_date = datetime.now()

@@ -115,7 +115,6 @@ def add_ingredient_view(request, pk, *args, **kwargs):
             food_and_drinks=food_and_drinks,
             quantity=quantity,
         )
-        print(food_and_drinks)
 
     return redirect('item edit view', pk)
 

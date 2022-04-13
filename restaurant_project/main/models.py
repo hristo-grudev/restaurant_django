@@ -22,7 +22,7 @@ class Tables(models.Model):
     )
 
     def __str__(self):
-        return f'Table: {self.name}'
+        return f'Маса: {self.name}'
 
 
 class Ingredients(models.Model):
