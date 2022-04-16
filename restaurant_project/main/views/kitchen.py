@@ -117,7 +117,7 @@ def add_ingredient_view(request, pk, *args, **kwargs):
             ingredient=ingredient,
             food_and_drinks=food_and_drinks,
         )
-        if int(quantity) < 0:
+        if float(quantity) < 0:
             raise ValueError(value_error_message)
         food_ingredient[0].quantity = quantity
         food_ingredient[0].save()
