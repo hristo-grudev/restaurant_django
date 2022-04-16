@@ -36,7 +36,6 @@ class TablesViewTests(django_test.TestCase):
         category = Categories.objects.create(
             name='testcategory',
             group=group,
-            image='image/upload/v1649841043/cjp8t9davigpzdcafvsb.png',
         )
 
         ingredient1 = Ingredients.objects.create(
@@ -59,13 +58,13 @@ class TablesViewTests(django_test.TestCase):
             quantity=1,
         )
 
-        OrderDetails.objects.create(
+        order_details = OrderDetails.objects.create(
             order=order,
             food_and_drinks=drink,
             pcs=2,
         )
 
-        response = self.client.get(reverse('remove item', kwargs={'pk': 1, 'item_id': 1}))
+        response = self.client.get(reverse('remove item', kwargs={'pk': table.id, 'item_id': order_details.id}))
 
         expected_url = reverse('table details', kwargs={'pk': table.id})
 

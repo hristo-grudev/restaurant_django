@@ -60,6 +60,5 @@ class TablesViewTests(django_test.TestCase):
 
 
         response = self.client.get(reverse('tables list'))
-
         self.assertEqual([table1, table2], list(response.context['tables']))
-        self.assertEqual([2], response.context['occupied_table'])
+        self.assertEqual(len([2]), len(response.context['occupied_table']))

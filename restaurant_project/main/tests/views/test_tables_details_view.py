@@ -14,6 +14,8 @@ class TablesViewTests(django_test.TestCase):
         'email': 'testuser',
         'password': '12345qew',
     }
+
+
     def test_get_correct_group__expect_correct_template(self):
         user = UserModel.objects.create_user(**self.VALID_USER_CREDENTIALS)
         group = Group.objects.create(
@@ -32,7 +34,9 @@ class TablesViewTests(django_test.TestCase):
             waiter=user,
         )
 
-        response = self.client.get(reverse('table details', kwargs={'pk': 1}))
+
+
+        response = self.client.get(reverse('table details', kwargs={'pk': table.id}))
         self.assertTemplateUsed(response, 'waiters/table_details.html')
 
     def test_get_dif_group__expect_redirect(self):
@@ -53,7 +57,7 @@ class TablesViewTests(django_test.TestCase):
             waiter=user,
         )
 
-        response = self.client.get(reverse('table details', kwargs={'pk': 1}))
+        response = self.client.get(reverse('table details', kwargs={'pk': table.id}))
         self.assertEqual(302, response.status_code)
 
     def test_get_correct_searched_string(self):
@@ -98,7 +102,7 @@ class TablesViewTests(django_test.TestCase):
             quantity=1,
         )
         ''
-        response = self.client.get(reverse('table details', kwargs={'pk': 1})+'?item=вино')
+        response = self.client.get(reverse('table details', kwargs={'pk': table.id})+'?item=вино')
 
         print(response)
 
@@ -146,9 +150,7 @@ class TablesViewTests(django_test.TestCase):
             quantity=1,
         )
         ''
-        response = self.client.get(reverse('table details', kwargs={'pk': 1})+'?category=1')
-
-        print(response)
+        response = self.client.get(reverse('table details', kwargs={'pk': table.id})+f'?category={category.id}')
 
         self.assertEqual([drink], list(response.context['items']))
 
@@ -173,7 +175,6 @@ class TablesViewTests(django_test.TestCase):
         category = Categories.objects.create(
             name='testcategory',
             group=group,
-            image='image/upload/v1649841043/cjp8t9davigpzdcafvsb.png',
         )
 
         ingredient1 = Ingredients.objects.create(
@@ -187,7 +188,6 @@ class TablesViewTests(django_test.TestCase):
             category=category,
             price=5,
             user=user,
-            image='image/upload/v1649841043/cjp8t9davigpzdcafvsb.png',
         )
 
         FoodAndDrinksToIngredients.objects.create(
@@ -200,13 +200,13 @@ class TablesViewTests(django_test.TestCase):
             order=order,
             food_and_drinks=drink,
             pcs=2,
+            completed=True,
         )
 
 
-        # response = self.client.get(reverse('table details', kwargs={'pk': 1}))
+        response = self.client.get(reverse('table details', kwargs={'pk': table.id}))
 
-
-        # self.assertEqual(user, list(response.context['user']))
-        # self.assertEqual(order, list(response.context['order']))
-        # self.assertEqual(10, response.context['total_sum'])
-        # self.assertEqual([], list(response.context['sent_items_id']))
+        self.assertEqual(user, response.context[0]['user'])
+        self.assertEqual(order, response.context[0]['order'])
+        self.assertEqual(10, response.context[0]['total_sum'])
+        self.assertEqual(1, len(response.context[0]['sent_items']))

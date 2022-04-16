@@ -56,8 +56,6 @@ class Categories(models.Model):
         max_length=CATEGORY_MAX_LENGTH,
     )
 
-    image = cloudinary_models.CloudinaryField('image')
-
     group = models.ForeignKey(
         Group,
         on_delete=models.CASCADE,
@@ -91,7 +89,7 @@ class FoodAndDrinks(models.Model):
         auto_now_add=True,
     )
 
-    image = cloudinary_models.CloudinaryField('image')
+    image = cloudinary_models.CloudinaryField('image', blank=True, null=True)
 
     user = models.ForeignKey(
         RestaurantUser,

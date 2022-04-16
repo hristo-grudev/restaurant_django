@@ -97,7 +97,8 @@ class EditMenuView(BarAndKitchenAccess, ListView):
     def get_queryset(self):
         return super() \
             .get_queryset() \
-            .filter(category_id=self.kwargs['pk'])
+            .filter(category_id=self.kwargs['pk']) \
+            .filter(user=self.request.user)
 
 @group_required(allowed_roles=['Cooks', 'Bartenders'])
 def remove_ingredient(request, pk, *args, **kwargs):
