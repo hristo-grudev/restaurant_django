@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import logout, get_user_model
 from django.contrib.auth import views as auth_views
 from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, DetailView, UpdateView, RedirectView
@@ -45,6 +46,12 @@ class EditProfileView(UpdateView):
     model = Profile
     template_name = 'accounts/profile_edit.html'
     form_class = EditProfileForm
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.id != kwargs['pk']:
+            return redirect('details profile', self.request.user.id)
+
+        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse_lazy('details profile', args=(self.request.user.id,))

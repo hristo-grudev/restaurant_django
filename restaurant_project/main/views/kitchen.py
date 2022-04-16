@@ -51,6 +51,7 @@ class ItemEditView(BarAndKitchenAccess, UpdateView):
         kwargs['user'] = self.request.user
         return kwargs
 
+
     def get_success_url(self):
         return reverse_lazy('edit menu view', kwargs={'pk': self.object.category.id})
 
@@ -106,15 +107,19 @@ def remove_ingredient(request, pk, *args, **kwargs):
 
 @group_required(allowed_roles=['Cooks', 'Bartenders'])
 def add_ingredient_view(request, pk, *args, **kwargs):
+    value_error_message = 'Quantity must be positive number.'
     if request.method == 'POST':
         ingredient = Ingredients.objects.get(id=request.POST['ingredient'])
         food_and_drinks = FoodAndDrinks.objects.get(id=pk)
         quantity = request.POST['quantity']
-        FoodAndDrinksToIngredients.objects.create(
+        food_ingredient = FoodAndDrinksToIngredients.objects.get_or_create(
             ingredient=ingredient,
             food_and_drinks=food_and_drinks,
-            quantity=quantity,
         )
+        if int(quantity) < 0:
+            raise ValueError(value_error_message)
+        food_ingredient[0].quantity = quantity
+        food_ingredient[0].save()
 
     return redirect('item edit view', pk)
 

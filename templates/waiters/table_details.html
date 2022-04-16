@@ -16,13 +16,13 @@
             </div>
         </div>
     {% else %}
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     {% for cat in categories %}
                         <li class="nav-item active">
                             <a href="{% url 'table details' pk %}?category={{ cat.id }}"
-                               class="btn btn-primary">{{ cat.name }}</a>
+                               class="btn navbar-brand">{{ cat.name }}</a>
                         </li>
                     {% endfor %}
 

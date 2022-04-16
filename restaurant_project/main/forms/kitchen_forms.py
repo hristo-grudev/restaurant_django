@@ -53,6 +53,7 @@ class EditItemFrom(BootstrapFormMixin, ModelForm):
         self.fields['price'].label = self.PRICE_LABEL
         self.fields['image'].label = self.IMAGE_LABEL
 
+
     def save(self, commit=True):
         item = super().save(commit=False)
 

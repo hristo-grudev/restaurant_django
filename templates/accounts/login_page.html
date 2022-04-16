@@ -2,24 +2,24 @@
 {% load static %}
 
 {% block page_content %}
-<div class="wrapper fadeInDown">
-  <div id="formContent">
+    <div class="row">
+        <div class="col-lg-3"></div>
 
-    <form method="POST">
-        {% csrf_token %}
-        {{ form }}
-        <button type="submit">Log in</button>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form }}
+                <button type="submit" class="btn btn-success">Вход</button>
 
 
-{#        <img src="{% static 'images/Logo.jpg' %}">#}
+        {#        <img src="{% static 'images/Logo.jpg' %}">#}
 
-    </form>
+            </form>
+        <div class="col-lg-6">
+            <a class="underlineHover btn btn-warning" href="{% url 'register user' %}">Регистрация</a>
+        </div>
 
-    <!-- Remind Passowrd -->
-    <div id="formFooter">
-      <a class="underlineHover" href="{% url 'register user' %}">Register</a>
     </div>
 
-  </div>
-</div>
+
+
 {% endblock %}
