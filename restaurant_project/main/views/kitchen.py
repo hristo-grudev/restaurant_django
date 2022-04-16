@@ -128,3 +128,4 @@ def add_ingredient_view(request, pk, *args, **kwargs):
 class IngredientsView(BarAndKitchenAccess, ListView):
     model = Ingredients
     template_name = 'kitchen/ingredients.html'
+    paginate_by = 10
