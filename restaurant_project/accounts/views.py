@@ -17,7 +17,7 @@ user_model = get_user_model()
 class UserRegisterView(CreateView):
     form_class = CreateProfileForm
     template_name = 'accounts/profile_create.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('login user')
 
 
 class UserLoginView(auth_views.LoginView):

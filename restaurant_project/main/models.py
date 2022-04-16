@@ -154,6 +154,9 @@ class Orders(models.Model):
     def __str__(self):
         return f'Table: {self.table.name}'
 
+    class Meta:
+        ordering = ['pk']
+
 
 class OrderDetails(models.Model):
     PCS_MIN_VALUE = 0.0

@@ -17,7 +17,7 @@ class KitchenHomeView(BarAndKitchenAccess, TemplateView):
         context = super().get_context_data(**kwargs)
         user_group_all = self.request.user.groups.all()
         user_group = user_group_all[0]
-        order_items = OrderDetails.objects.filter(completed=False).filter(food_and_drinks__category__group=user_group)
+        order_items = OrderDetails.objects.filter(completed=False).filter(food_and_drinks__category__group=user_group).order_by('id')
         context['order_items'] = order_items
         context['user_group'] = user_group
 
