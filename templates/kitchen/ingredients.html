@@ -69,4 +69,38 @@
         </div>
     </div>
 
+    <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page=1">първа</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}"><-</a>
+        </li>
+
+        {% else %}
+        <li class="page-item">
+            <a class="page-link">първа</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link"><-</a>
+        </li>
+        {% endif %}
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">-></a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">последна</a>
+        </li>
+        {% else %}
+        <li class="page-item">
+            <a class="page-link">-></a>
+        </li>
+        <li class="page-item">
+            <a class="page-link">последна</a>
+        </li>
+        {% endif %}
+    </ul>
+
 {% endblock %}
